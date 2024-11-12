@@ -1,5 +1,6 @@
 package Database_Post.database_Post.entity;
 
+import Database_Post.database_Post.Status;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,7 @@ public class UserEntity {
     @Column(name = "name",nullable = false)
     private String name;
     @Column(name = "Status",nullable = false)
-    private String status;
+    private Status status;
 
 
     //Setter and Getter
@@ -34,11 +35,11 @@ public class UserEntity {
         this.name = name;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

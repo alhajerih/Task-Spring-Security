@@ -1,7 +1,7 @@
 package Database_Post.database_Post.service;
 
 import Database_Post.database_Post.bo.CreateUserRequest;
-import Database_Post.database_Post.bo.UserRespone;
+import Database_Post.database_Post.bo.UserResponse;
 import Database_Post.database_Post.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,5 +11,8 @@ public interface UserService{
     @Autowired
     List<UserEntity> getAllUsers();
 
-    UserRespone createUser(CreateUserRequest request);
+    UserResponse createUser(CreateUserRequest request);
+    boolean updateUserStatus(Long id ,String status);
+    List<UserResponse> searchUserByStatus(String status);
+
 }

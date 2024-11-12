@@ -1,11 +1,11 @@
 package Database_Post.database_Post.bo;
 
-public class UserRespone {
+public class UserResponse {
     private Long id;
     private String name;
     private  String status;
 
-    public UserRespone(Long id, String name, String status) {
+    public UserResponse(Long id, String name, String status) {
         this.id = id;
         this.name = name;
         this.status = status;
