@@ -1,23 +1,36 @@
 package Database_Post.database_Post.entity;
 
-import Database_Post.database_Post.Status;
-import jakarta.persistence.*;
+//import com.example.demo.util.Status;
+
+import Database_Post.database_Post.util.Status;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Users Table")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",nullable = false)
     private Long id;
-    @Column(name = "name",nullable = false)
+
     private String name;
-    @Column(name = "Status",nullable = false)
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(name="user_name", nullable = false)
+    private String username;
 
-    //Setter and Getter
+    @Column(name = "password",nullable = false)
+    private String password;
+/*
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 
+ */
+
+    String role;
 
     public Long getId() {
         return id;
@@ -41,5 +54,37 @@ public class UserEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+/*
+    public RoleEntity getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }*/
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

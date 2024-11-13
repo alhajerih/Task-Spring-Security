@@ -1,16 +1,19 @@
 package Database_Post.database_Post.bo;
 
 public class UserResponse {
-    private Long id;
-    private String name;
-    private  String status;
 
-    public UserResponse(Long id, String name, String status) {
+    private Long id;
+
+    private String name;
+
+    private String status;
+
+    public UserResponse(Long id, String name,String status) {
         this.id = id;
         this.name = name;
-        this.status = status;
+        this.status=status;
     }
-    // Getters and setters
+
     public Long getId() {
         return id;
     }
