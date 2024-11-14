@@ -1,5 +1,6 @@
 package Database_Post.database_Post.bo;
 
+import Database_Post.database_Post.entity.RoleEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -9,7 +10,7 @@ public class CreateUserRequest {
     private String password;
     private String phoneNumber;
     private String email;
-    private String role;
+    private RoleEntity role;
     private String address;
 
     public CreateUserRequest () {
@@ -62,13 +63,12 @@ public class CreateUserRequest {
         this.password = password;
     }
 
-    public String getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
     }
-
-    }
+}
 

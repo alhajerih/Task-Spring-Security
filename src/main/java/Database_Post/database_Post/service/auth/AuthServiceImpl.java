@@ -66,14 +66,14 @@ public class AuthServiceImpl implements AuthService{
         CustomUserDetails userDetails = new CustomUserDetails();
         userDetails.setId(userEntity.getId());
         userDetails.setUserName(userEntity.getUsername());
-        userDetails.setRole(userEntity.getRole());
+        userDetails.setRole(userEntity.getRole().toString());
 
         String token = jwtUtil.generateToken(userDetails);
 
         AuthenticationResponse response = new AuthenticationResponse();
         response.setId(userEntity.getId());
         response.setUsername(userEntity.getUsername());
-        response.setRole(userEntity.getRole());
+        response.setRole(userEntity.getRole().toString());
         response.setToken("Bearer " + token);
 
         return response;
@@ -118,11 +118,11 @@ public class AuthServiceImpl implements AuthService{
         userEntity = userRepository.save(userEntity);
 
         // Only create an account if the user is not an admin
-        if ("USER".equalsIgnoreCase(request.getRole())) {
+        if ("USER".equalsIgnoreCase(request.getRole().toString())) {
             accountService.createAccount(userEntity.getId());
         }
 
         return new UserResponse(userEntity.getId(),userEntity.getUsername(),
-                userEntity.getEmail(),userEntity.getAddress(),userEntity.getPhoneNumber(),userEntity.getRole());
+                userEntity.getEmail(),userEntity.getAddress(),userEntity.getPhoneNumber(),userEntity.getRole().toString());
     }
 }

@@ -17,18 +17,12 @@ public class UserEntity {
 
 
     private String email;
-    private String role;
+    private RoleEntity role;
 
     // Getters and setters
 
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+
 
     public Long getId() {
         return id;
@@ -79,12 +73,11 @@ public class UserEntity {
     }
 
 
-
-    public String getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
     }
 }
