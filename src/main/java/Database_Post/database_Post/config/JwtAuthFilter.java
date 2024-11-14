@@ -1,7 +1,5 @@
 package Database_Post.database_Post.config;
 
-//import com.example.demo.exception.UserNotFoundException;
-//import com.example.demo.service.auth.CustomUserDetailsService;
 import Database_Post.database_Post.exception.UserNotFoundException;
 import Database_Post.database_Post.service.auth.CustomUserDetailsService;
 import org.springframework.context.annotation.Configuration;

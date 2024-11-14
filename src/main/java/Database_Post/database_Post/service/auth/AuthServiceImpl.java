@@ -122,16 +122,15 @@ public class AuthServiceImpl implements AuthService{
 
         RoleEntity role =  roleRepository.findByRoleName(Roles.valueOf(request.getRole())).orElse(null);
 
-if(role ==null){
-     role= new RoleEntity();
-    role.setRoleName(Roles.valueOf(request.getRole()));
-    roleRepository.save(role);
+        if(role ==null){
+             role= new RoleEntity();
+            role.setRoleName(Roles.valueOf(request.getRole()));
+            roleRepository.save(role);
 
-}
+        }
 
 
         userEntity.setRole(role);
-        userEntity.setId(request.);
 
         userEntity = userRepository.save(userEntity);
 
