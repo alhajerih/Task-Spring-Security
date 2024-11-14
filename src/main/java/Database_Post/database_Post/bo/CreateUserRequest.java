@@ -10,7 +10,7 @@ public class CreateUserRequest {
     private String password;
     private String phoneNumber;
     private String email;
-    private RoleEntity role;
+    private String role;
     private String address;
 
     public CreateUserRequest () {
@@ -63,11 +63,11 @@ public class CreateUserRequest {
         this.password = password;
     }
 
-    public RoleEntity getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(RoleEntity role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }

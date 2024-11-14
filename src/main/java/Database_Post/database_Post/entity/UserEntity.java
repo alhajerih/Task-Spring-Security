@@ -1,5 +1,6 @@
 package Database_Post.database_Post.entity;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +18,8 @@ public class UserEntity {
 
 
     private String email;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Role", nullable = false)
     private RoleEntity role;
 
     // Getters and setters
@@ -80,4 +83,5 @@ public class UserEntity {
     public void setRole(RoleEntity role) {
         this.role = role;
     }
+
 }

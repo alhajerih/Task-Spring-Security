@@ -8,11 +8,14 @@ import Database_Post.database_Post.bo.auth.AuthenticationResponse;
 import Database_Post.database_Post.bo.auth.CreateLoginRequest;
 import Database_Post.database_Post.bo.auth.LogoutResponse;
 import Database_Post.database_Post.config.JWTUtil;
+import Database_Post.database_Post.entity.RoleEntity;
 import Database_Post.database_Post.entity.UserEntity;
 import Database_Post.database_Post.exception.BodyGuardException;
 import Database_Post.database_Post.exception.UserNotFoundException;
+import Database_Post.database_Post.repository.RoleRepository;
 import Database_Post.database_Post.repository.UserRepository;
 import Database_Post.database_Post.service.AccountService;
+import Database_Post.database_Post.util.Roles;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,8 +33,9 @@ public class AuthServiceImpl implements AuthService{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AccountService accountService;
     private final JWTUtil jwtUtil;
+    private final RoleRepository roleRepository;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AccountService accountService, JWTUtil jwtUtil) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AccountService accountService, JWTUtil jwtUtil, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
@@ -39,6 +43,7 @@ public class AuthServiceImpl implements AuthService{
         this.accountService = accountService;
 
         this.jwtUtil = jwtUtil;
+        this.roleRepository = roleRepository;
     }
 
     /*
@@ -113,7 +118,20 @@ public class AuthServiceImpl implements AuthService{
         userEntity.setPhoneNumber(request.getPhoneNumber());
         userEntity.setAddress(request.getAddress());
         userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        userEntity.setRole(request.getRole());
+
+
+        RoleEntity role =  roleRepository.findByRoleName(Roles.valueOf(request.getRole())).orElse(null);
+
+if(role ==null){
+     role= new RoleEntity();
+    role.setRoleName(Roles.valueOf(request.getRole()));
+    roleRepository.save(role);
+
+}
+
+
+        userEntity.setRole(role);
+        userEntity.setId(request.);
 
         userEntity = userRepository.save(userEntity);
 
@@ -123,6 +141,6 @@ public class AuthServiceImpl implements AuthService{
         }
 
         return new UserResponse(userEntity.getId(),userEntity.getUsername(),
-                userEntity.getEmail(),userEntity.getAddress(),userEntity.getPhoneNumber(),userEntity.getRole().toString());
+                userEntity.getEmail(),userEntity.getAddress(),userEntity.getPhoneNumber(),userEntity.getRole().getRoleName().toString());
     }
 }

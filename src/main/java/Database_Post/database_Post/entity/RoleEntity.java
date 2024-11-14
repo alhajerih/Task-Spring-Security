@@ -1,8 +1,6 @@
 package Database_Post.database_Post.entity;
 
 
-//import com.example.demo.util.Roles;
-
 import Database_Post.database_Post.util.Roles;
 
 import javax.persistence.*;
@@ -13,9 +11,13 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Roles title;
+    @Column(nullable = false, unique = true)
+    private Roles roleName; // Example: "ADMIN", "USER"
 
+    @ManyToOne
+    private UserEntity user;
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -24,11 +26,19 @@ public class RoleEntity {
         this.id = id;
     }
 
-    public Roles getTitle() {
-        return title;
+    public Roles getRoleName() {
+        return roleName;
     }
 
-    public void setTitle(Roles title) {
-        this.title = title;
+    public void setRoleName(Roles roleName) {
+        this.roleName = roleName;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }
