@@ -8,6 +8,8 @@ import Database_Post.database_Post.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,6 +39,23 @@ public class UserServiceImpl implements UserService {
 
         return new UserResponse(userEntity.getId(),userEntity.getUsername(),userEntity.getPhoneNumber(),userEntity.getEmail(),userEntity.getAddress(),userEntity.getRole().toString());
     }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public UserEntity getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
 
 
     @Override

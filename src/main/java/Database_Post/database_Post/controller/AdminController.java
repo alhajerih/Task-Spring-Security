@@ -3,9 +3,7 @@ package Database_Post.database_Post.controller;
 import Database_Post.database_Post.entity.UserEntity;
 import Database_Post.database_Post.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,10 +16,18 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @GetMapping("/all-users")
+    public List<UserEntity> getAllUsers(){
+        return userService.getAllUsers();
+    }
 
-//    @GetMapping("/all-users")
-//    public List<UserEntity> getAllUsers(){
-//        return userService.getAllUsers();
-//
-//    }
+    @GetMapping("/user/{id}")
+    public UserEntity getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/delete-user/{id}")
+    public void deleteUserById(@PathVariable Long id) {
+        userService.deleteUserById(id);
+    }
 }
