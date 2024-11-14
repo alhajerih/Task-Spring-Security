@@ -20,8 +20,10 @@ public class UserEntity {
 
 
     private String email;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     @JsonBackReference
     private RoleEntity role;
 

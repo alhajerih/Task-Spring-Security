@@ -2,10 +2,8 @@ package Database_Post.database_Post.entity;
 
 
 import Database_Post.database_Post.util.Roles;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class RoleEntity {
@@ -13,12 +11,11 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true)
     private Roles roleName; // Example: "ADMIN", "USER"
 
-    @OneToMany(mappedBy ="role")
-    @JsonManagedReference
-    private List<UserEntity> users;
+
+    //private UserEntity user;
 
     // Getters and Setters
     public Long getId() {
@@ -37,11 +34,8 @@ public class RoleEntity {
         this.roleName = roleName;
     }
 
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserEntity> users) {
-        this.users = users;
+    @Override
+    public String toString() {
+        return roleName.toString();
     }
 }
