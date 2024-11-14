@@ -5,11 +5,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateUserRequest {
 
-    private String status;
     private String username;
     private String password;
+    private String phoneNumber;
     private String email;
     private String role;
+    private String address;
+
+    public CreateUserRequest () {
+        // Default constructor
+    }
+
+    public CreateUserRequest (String username ) {
+        this.username = username;
+    }
+
+
 
     public String getEmail() {
         return email;
@@ -19,24 +30,20 @@ public class CreateUserRequest {
         this.email = email;
     }
 
-    public CreateUserRequest () {
-        // Default constructor
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public CreateUserRequest (String username) {
-        this.username = username;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-
-
-
-
-    public String getStatus() {
-        return status;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getUsername() {
@@ -62,4 +69,6 @@ public class CreateUserRequest {
     public void setRole(String role) {
         this.role = role;
     }
-}
+
+    }
+

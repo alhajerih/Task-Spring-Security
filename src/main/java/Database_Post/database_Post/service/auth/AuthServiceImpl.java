@@ -1,12 +1,6 @@
 package Database_Post.database_Post.service.auth;
 
-//import com.example.demo.bo.CustomUserDetails;
-//import com.example.demo.bo.auth.AuthenticationResponse;
-//import com.example.demo.bo.auth.CreateLoginRequest;
-//import com.example.demo.bo.auth.LogoutResponse;
-//import com.example.demo.config.JWTUtil;
-//import com.example.demo.exception.BodyGuardException;
-//import com.example.demo.exception.UserNotFoundException;
+
 import Database_Post.database_Post.bo.CreateUserRequest;
 import Database_Post.database_Post.bo.CustomUserDetails;
 import Database_Post.database_Post.bo.UserResponse;
@@ -19,7 +13,6 @@ import Database_Post.database_Post.exception.BodyGuardException;
 import Database_Post.database_Post.exception.UserNotFoundException;
 import Database_Post.database_Post.repository.UserRepository;
 import Database_Post.database_Post.service.AccountService;
-import Database_Post.database_Post.util.Status;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -74,7 +67,6 @@ public class AuthServiceImpl implements AuthService{
         userDetails.setId(userEntity.getId());
         userDetails.setUserName(userEntity.getUsername());
         userDetails.setRole(userEntity.getRole());
-        userDetails.setStatus(userEntity.getStatus().toString());
 
         String token = jwtUtil.generateToken(userDetails);
 
@@ -116,10 +108,11 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public UserResponse createUser(CreateUserRequest request) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setName(request.getUsername());
         userEntity.setUsername(request.getEmail()); // Store email as username
+        userEntity.setEmail(request.getEmail());
+        userEntity.setPhoneNumber(request.getPhoneNumber());
+        userEntity.setAddress(request.getAddress());
         userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        userEntity.setStatus(Status.ACTIVE); // Set default status
         userEntity.setRole(request.getRole());
 
         userEntity = userRepository.save(userEntity);
@@ -129,6 +122,7 @@ public class AuthServiceImpl implements AuthService{
             accountService.createAccount(userEntity.getId());
         }
 
-        return new UserResponse(userEntity.getId(),userEntity.getUsername(), userEntity.getStatus().toString());
+        return new UserResponse(userEntity.getId(),userEntity.getUsername(),
+                userEntity.getEmail(),userEntity.getAddress(),userEntity.getPhoneNumber(),userEntity.getRole());
     }
 }

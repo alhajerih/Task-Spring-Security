@@ -15,7 +15,6 @@ public class CustomUserDetails implements UserDetails {
     private String userName;
     private String password;
     private String role;
-    private String status;
 
 
 
@@ -47,13 +46,7 @@ public class CustomUserDetails implements UserDetails {
         this.role = role;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,7 +89,6 @@ public class CustomUserDetails implements UserDetails {
         claims.put("id",this.id);
         claims.put("userName", this.userName);
         claims.put("role", role);
-        claims.put("status", status);
 
         return claims;
     }

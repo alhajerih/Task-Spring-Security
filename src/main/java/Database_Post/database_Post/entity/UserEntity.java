@@ -1,6 +1,5 @@
 package Database_Post.database_Post.entity;
 
-import Database_Post.database_Post.util.Status;
 import javax.persistence.*;
 
 @Entity
@@ -10,27 +9,26 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-private String name;
+//    private String name;
     private String username; // Store email as username
     private String password;
     private String phoneNumber;
     private String address;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+
     private String email;
     private String role;
 
     // Getters and setters
 
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public Long getId() {
         return id;
@@ -80,13 +78,7 @@ private String name;
         this.address = address;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public String getRole() {
         return role;
