@@ -1,6 +1,5 @@
 package Database_Post.database_Post.config;
 
-//import com.example.demo.bo.CustomUserDetails;
 import Database_Post.database_Post.bo.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -107,4 +106,3 @@ public class JWTUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 }
-

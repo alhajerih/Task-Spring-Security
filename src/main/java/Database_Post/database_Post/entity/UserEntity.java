@@ -1,5 +1,7 @@
 package Database_Post.database_Post.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.management.relation.Role;
 import javax.persistence.*;
 
@@ -22,6 +24,7 @@ public class UserEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonBackReference
     private RoleEntity role;
 
     // Getters and setters

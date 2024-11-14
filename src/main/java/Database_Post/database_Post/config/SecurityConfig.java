@@ -1,6 +1,5 @@
 package Database_Post.database_Post.config;
 
-//import com.example.demo.service.auth.CustomUserDetailsService;
 import Database_Post.database_Post.service.auth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     These lines declare constant strings AUTH_PATH and USER_PATH, representing the paths related to authentication and user-related resources, respectively.
      */
     public static final String AUTH_PATH= "/auth/**";
-    public static final String ADMIN_PATH="/admin/**";
-    public static final String USER_PATH = "/user/**";
+    public static final String ADMIN_PATH="/admin-dashboard/**";
+    public static final String USER_PATH = "/nice-worlds/**";
 
     /*
     These lines declare two lists of strings, ALLOWED_METHODS and ALLOWED_HEADERS. These lists specify the HTTP methods and headers allowed for CORS (Cross-Origin Resource Sharing) configuration.
