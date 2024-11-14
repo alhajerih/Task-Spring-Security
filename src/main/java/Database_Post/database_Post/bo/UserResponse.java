@@ -4,12 +4,18 @@ public class UserResponse {
 
     private Long id;
     private String username;
-    private String status;
+    private String phoneNumber;
+    private String email;
+    private String address;
+    private String role;
 
-    public UserResponse(Long id,String username,String status) {
+    public UserResponse(Long id, String username, String phoneNumber, String email, String address, String role) {
         this.id = id;
-        this.username=username;
-        this.status=status;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.role = role;
     }
 
     public Long getId() {
@@ -28,11 +34,35 @@ public class UserResponse {
         this.username = username;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
