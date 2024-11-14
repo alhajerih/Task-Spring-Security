@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        System.out.println(http.authe);
         http.csrf().disable()
                 .exceptionHandling()
                 .and()
@@ -69,8 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_PATH).permitAll()
-                .antMatchers(USER_PATH).hasAuthority("user")
-                .antMatchers(ADMIN_PATH).hasAuthority("admin")
+                .antMatchers(USER_PATH).hasAuthority("USER")
+                .antMatchers(ADMIN_PATH).hasAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService), UsernamePasswordAuthenticationFilter.class);
 

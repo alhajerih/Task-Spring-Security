@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         // Save the updated user
         userRepository.save(userEntity);
 
-        return new UserResponse(userEntity.getId(),userEntity.getUsername(),userEntity.getPhoneNumber(),userEntity.getEmail(),userEntity.getAddress(),userEntity.getRole().toString());
+        return new UserResponse(userEntity.getId(),userEntity.getUsername(),userEntity.getPhoneNumber(),userEntity.getEmail(),userEntity.getAddress(),userEntity.getRole().getRoleName().toString());
     }
 
     @Override

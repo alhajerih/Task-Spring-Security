@@ -71,14 +71,14 @@ public class AuthServiceImpl implements AuthService{
         CustomUserDetails userDetails = new CustomUserDetails();
         userDetails.setId(userEntity.getId());
         userDetails.setUserName(userEntity.getUsername());
-        userDetails.setRole(userEntity.getRole().toString());
+        userDetails.setRole(userEntity.getRole().getRoleName().toString());
 
         String token = jwtUtil.generateToken(userDetails);
 
         AuthenticationResponse response = new AuthenticationResponse();
         response.setId(userEntity.getId());
         response.setUsername(userEntity.getUsername());
-        response.setRole(userEntity.getRole().toString());
+        response.setRole(userEntity.getRole().getRoleName().toString());
         response.setToken("Bearer " + token);
 
         return response;
@@ -122,21 +122,20 @@ public class AuthServiceImpl implements AuthService{
 
         RoleEntity role =  roleRepository.findByRoleName(Roles.valueOf(request.getRole())).orElse(null);
 
-if(role ==null){
-     role= new RoleEntity();
-    role.setRoleName(Roles.valueOf(request.getRole()));
-    roleRepository.save(role);
-
-}
+        if (role == null){
+            role= new RoleEntity();
+            role.setRoleName(Roles.valueOf(request.getRole()));
+            roleRepository.save(role);
+        }
 
 
         userEntity.setRole(role);
-        userEntity.setId(request.);
+        //userEntity.setId(request.);
 
         userEntity = userRepository.save(userEntity);
 
         // Only create an account if the user is not an admin
-        if ("USER".equalsIgnoreCase(request.getRole().toString())) {
+        if ("USER".equalsIgnoreCase(request.getRole())) {
             accountService.createAccount(userEntity.getId());
         }
 

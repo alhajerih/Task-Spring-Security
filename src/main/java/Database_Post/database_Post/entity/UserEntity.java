@@ -18,8 +18,10 @@ public class UserEntity {
 
 
     private String email;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Role", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role;
 
     // Getters and setters

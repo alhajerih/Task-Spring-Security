@@ -11,11 +11,11 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true)
     private Roles roleName; // Example: "ADMIN", "USER"
 
-    @ManyToOne
-    private UserEntity user;
+
+    //private UserEntity user;
 
     // Getters and Setters
     public Long getId() {
@@ -34,11 +34,8 @@ public class RoleEntity {
         this.roleName = roleName;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
+    @Override
+    public String toString() {
+        return roleName.toString();
     }
 }
