@@ -16,4 +16,7 @@ public interface UserService {
 
     UpdateUserResponse updateUserProfile(UpdateUserProfileRequest request, String loggedInUsername);
     UserEntity getUserProfile(Long userId);
+    List<UserEntity> getAllUsers();
+    UserEntity getUserById(Long userId);
+    void deleteUserById(Long userId);
 }
