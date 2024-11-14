@@ -3,14 +3,12 @@ package Database_Post.database_Post.bo;
 public class UserResponse {
 
     private Long id;
-
-    private String name;
-
+    private String username;
     private String status;
 
-    public UserResponse(Long id, String name,String status) {
+    public UserResponse(Long id,String username,String status) {
         this.id = id;
-        this.name = name;
+        this.username=username;
         this.status=status;
     }
 
@@ -22,12 +20,12 @@ public class UserResponse {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStatus() {

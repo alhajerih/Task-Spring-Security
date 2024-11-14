@@ -1,47 +1,69 @@
 package Database_Post.database_Post.service;
 
-//import com.example.demo.bo.CreateUserRequest;
-//import com.example.demo.bo.UserResponse;
-//import com.example.demo.entity.UserEntity;
-//import com.example.demo.repository.UserRepository;
-import Database_Post.database_Post.bo.CreateUserRequest;
+import Database_Post.database_Post.bo.CustomUserDetails;
+import Database_Post.database_Post.bo.UpdateUserProfileRequest;
+import Database_Post.database_Post.bo.UpdateUserResponse;
 import Database_Post.database_Post.bo.UserResponse;
+import Database_Post.database_Post.config.JWTUtil;
 import Database_Post.database_Post.entity.UserEntity;
 import Database_Post.database_Post.repository.UserRepository;
-import Database_Post.database_Post.util.Status;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    private final JWTUtil jwtUtil;
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
-    public UserResponse createUser(CreateUserRequest request) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName(request.getName());
-        userEntity.setUsername(request.getUsername());
-        userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword())); // todo fick fixa encoding!!!
-        userEntity.setStatus(Status.valueOf(request.getStatus()));
+    public UserEntity getUserProfile(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 
-        userEntity.setRole(request.getRole());
+    @Override
+    public UpdateUserResponse updateUserProfile(UpdateUserProfileRequest request, String loggedInUsername) {
+        // Find the logged-in user by username
+        UserEntity userEntity = userRepository.findByUsername(loggedInUsername)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Update fields if provided
+        if (request.getUsername() != null) userEntity.setUsername(request.getUsername());
+        if (request.getEmail() != null) userEntity.setUsername(request.getEmail());
+        if (request.getPhoneNumber() != null) userEntity.setPhoneNumber(request.getPhoneNumber());
+        if (request.getAddress() != null) userEntity.setAddress(request.getAddress());
+        if (request.getPassword() != null) userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+
+        // Save the updated user
         userEntity = userRepository.save(userEntity);
-        UserResponse response = new UserResponse(userEntity.getId(), userEntity.getName(),userEntity.getStatus().toString());
-        return response;
+
+        // Generate a new token
+        CustomUserDetails userDetails = new CustomUserDetails();
+        userDetails.setId(userEntity.getId());
+        userDetails.setUserName(userEntity.getUsername());
+        userDetails.setRole(userEntity.getRole());
+        userDetails.setStatus(userEntity.getStatus().toString());
+
+        String newToken = jwtUtil.generateToken(userDetails);
+
+        // Return the updated user with a new token
+        return new UpdateUserResponse(
+                new UserResponse(userEntity.getId(), userEntity.getName(), userEntity.getStatus().toString()),
+                "Bearer " + newToken
+        );
     }
 
-    @Override
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
-    }
+
+
 }
+
+
+
+

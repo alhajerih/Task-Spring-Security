@@ -19,9 +19,9 @@ public class AdminController {
     }
 
 
-    @GetMapping("/allUsers")
-    public List<UserEntity> getAllUsers(){
-        return userService.getAllUsers();
-
-    }
+//    @GetMapping("/all-users")
+//    public List<UserEntity> getAllUsers(){
+//        return userService.getAllUsers();
+//
+//    }
 }

@@ -16,6 +16,9 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String role;
     private String status;
+
+
+
     public Long getId() {
         return id;
     }

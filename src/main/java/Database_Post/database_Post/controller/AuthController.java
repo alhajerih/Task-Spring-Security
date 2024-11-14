@@ -28,7 +28,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
-        UserResponse response = userService.createUser(request);
+
+        UserResponse response = authService.createUser(request);
 
         // Check if the response is not null (indicating a successful creation)
         if (response != null) {

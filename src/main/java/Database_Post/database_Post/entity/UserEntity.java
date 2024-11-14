@@ -1,9 +1,6 @@
 package Database_Post.database_Post.entity;
 
-//import com.example.demo.util.Status;
-
 import Database_Post.database_Post.util.Status;
-
 import javax.persistence.*;
 
 @Entity
@@ -13,32 +10,19 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+private String name;
+    private String username; // Store email as username
+    private String password;
+    private String phoneNumber;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+    private String email;
+    private String role;
 
-    @Column(name="user_name", nullable = false)
-    private String username;
+    // Getters and setters
 
-    @Column(name = "password",nullable = false)
-    private String password;
-/*
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
-
- */
-
-    String role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -48,12 +32,20 @@ public class UserEntity {
         this.name = name;
     }
 
-    public Status getStatus() {
-        return status;
+    public Long getId() {
+        return id;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
@@ -71,14 +63,30 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    public RoleEntity getRole() {
-        return role;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setRole(RoleEntity role) {
-        this.role = role;
-    }*/
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getRole() {
         return role;

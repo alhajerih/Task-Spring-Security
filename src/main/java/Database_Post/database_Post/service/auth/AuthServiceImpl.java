@@ -7,17 +7,24 @@ package Database_Post.database_Post.service.auth;
 //import com.example.demo.config.JWTUtil;
 //import com.example.demo.exception.BodyGuardException;
 //import com.example.demo.exception.UserNotFoundException;
+import Database_Post.database_Post.bo.CreateUserRequest;
 import Database_Post.database_Post.bo.CustomUserDetails;
+import Database_Post.database_Post.bo.UserResponse;
 import Database_Post.database_Post.bo.auth.AuthenticationResponse;
 import Database_Post.database_Post.bo.auth.CreateLoginRequest;
 import Database_Post.database_Post.bo.auth.LogoutResponse;
 import Database_Post.database_Post.config.JWTUtil;
+import Database_Post.database_Post.entity.UserEntity;
 import Database_Post.database_Post.exception.BodyGuardException;
 import Database_Post.database_Post.exception.UserNotFoundException;
+import Database_Post.database_Post.repository.UserRepository;
+import Database_Post.database_Post.service.AccountService;
+import Database_Post.database_Post.util.Status;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,12 +33,18 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authenticationManager;
 
     private final CustomUserDetailsService userDetailsService;
-
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AccountService accountService;
     private final JWTUtil jwtUtil;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JWTUtil jwtUtil) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AccountService accountService, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.accountService = accountService;
+
         this.jwtUtil = jwtUtil;
     }
 
@@ -45,26 +58,35 @@ public class AuthServiceImpl implements AuthService{
      */
     @Override
     public AuthenticationResponse login(CreateLoginRequest authenticationRequest) {
-        requiredNonNull(authenticationRequest.getUsername(), "username");
-        requiredNonNull(authenticationRequest.getPassword(), "password");
-
-        String username = authenticationRequest.getUsername().toLowerCase();
+        String username = authenticationRequest.getUsername().toLowerCase(); // Standardize input
         String password = authenticationRequest.getPassword();
 
-        authenticate(username, password);
+        UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
 
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        String accessToken = jwtUtil.generateToken(userDetails);
+        // Validate password
+        if (!bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        // Generate token
+        CustomUserDetails userDetails = new CustomUserDetails();
+        userDetails.setId(userEntity.getId());
+        userDetails.setUserName(userEntity.getUsername());
+        userDetails.setRole(userEntity.getRole());
+        userDetails.setStatus(userEntity.getStatus().toString());
+
+        String token = jwtUtil.generateToken(userDetails);
 
         AuthenticationResponse response = new AuthenticationResponse();
-        response.setId(userDetails.getId());
-        response.setUsername(userDetails.getUsername());
-        //response.setPassword(userDetails.getPassword());
-        response.setRole(userDetails.getRole());
-        response.setToken("Bearer " + accessToken);
+        response.setId(userEntity.getId());
+        response.setUsername(userEntity.getUsername());
+        response.setRole(userEntity.getRole());
+        response.setToken("Bearer " + token);
 
         return response;
     }
+
 
 
 
@@ -89,5 +111,24 @@ public class AuthServiceImpl implements AuthService{
         }catch (AuthenticationServiceException e){
             throw  new UserNotFoundException("Incorrect username");
         }
+    }
+
+    @Override
+    public UserResponse createUser(CreateUserRequest request) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setName(request.getUsername());
+        userEntity.setUsername(request.getEmail()); // Store email as username
+        userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        userEntity.setStatus(Status.ACTIVE); // Set default status
+        userEntity.setRole(request.getRole());
+
+        userEntity = userRepository.save(userEntity);
+
+        // Only create an account if the user is not an admin
+        if ("USER".equalsIgnoreCase(request.getRole())) {
+            accountService.createAccount(userEntity.getId());
+        }
+
+        return new UserResponse(userEntity.getId(),userEntity.getUsername(), userEntity.getStatus().toString());
     }
 }
